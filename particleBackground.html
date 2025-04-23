@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Particle Background</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+      .content {
+        position: relative;
+        color: white;
+        max-width: 600px;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="content">
+      <h1>Welcome</h1>
+      <p>
+        This is an example of content displayed over the particle animation.
+      </p>
+    </div>
+
+    <!-- Make sure the script is loaded from a reliable CDN -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+      integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Make sure the path to your script is correct -->
+    <script src="js/particleBackground.js"></script>
+
+    <!-- Add error handling for script loading -->
+    <script>
+      window.addEventListener(
+        'error',
+        function (event) {
+          console.error('Script error detected:', event.message)
+          document.body.innerHTML +=
+            '<div style="color:red; background:rgba(0,0,0,0.7); padding:20px; position:fixed; bottom:0; left:0; right:0;">Error loading particle animation: ' +
+            event.message +
+            '</div>'
+        },
+        true
+      )
+    </script>
+  </body>
+</html>

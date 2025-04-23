@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>View Note - <%= filename %></title>
+   <link rel="stylesheet" href="/stylesheets/style.css">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head> 
+<body>
+   <canvas id="particleCanvas"></canvas>
+   
+   <div class="main w-full min-h-screen">
+      <header class="py-8 px-10 text-center">
+         <h1 class="text-5xl font-extralight tracking-tight inline-block">
+            <span class="text-[#00df82]">Notes</span> Manager
+            <span class="animate-pulse text-[#00df82]/50 ml-1">_</span>
+         </h1>
+      </header>
+      
+      <div class="p-10">
+         <a href="/" class="btn flex items-center gap-2 text-[#00df82] hover:bg-[#00df82]/10 px-4 py-2 rounded-lg mb-8 inline-flex backdrop-blur-sm bg-zinc-800/40">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to notes
+         </a>
+         
+         <div class="task max-w-3xl mx-auto p-8 rounded-lg">
+            <h1 class="text-3xl text-white font-light tracking-tight mb-6"><%= filename %></h1>
+            <p class="text-lg text-white/80 leading-relaxed"><%= filedata %></p>
+         </div>
+      </div>
+   </div>
+   
+   <script src="/javascripts/script.js"></script>
+   <script src="/javascripts/particleBackground.js"></script>
+</body>
+</html>

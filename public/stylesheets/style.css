@@ -1,0 +1,399 @@
+/* 3D Futuristic Design System - Green Theme */
+:root {
+  --primary: #00df82;
+  --primary-light: #61ffb2;
+  --primary-dark: #00ad66;
+  --accent: #ff00aa;
+  --accent-light: #ff66cc;
+  --bg-dark: rgba(8, 12, 18, 0.97);
+  --bg-card: rgba(16, 24, 36, 0.85);
+  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --neon-glow: 0 0 15px rgba(0, 223, 130, 0.7), 0 0 30px rgba(0, 223, 130, 0.4), 0 0 45px rgba(0, 223, 130, 0.1);
+  --accent-glow: 0 0 15px rgba(255, 0, 170, 0.7), 0 0 30px rgba(255, 0, 170, 0.4), 0 0 45px rgba(255, 0, 170, 0.1);
+}
+
+/* Base Styles */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  color-scheme: dark;
+  background-color: var(--bg-dark);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  letter-spacing: -0.02em;
+}
+
+/* Canvas for Three.js */
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Main container */
+.main {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Content container for scrollable areas */
+.content-container {
+  position: relative;
+  flex: 1;
+  overflow-y: auto; /* Allow scrolling only within containers that need it */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  padding: 0 1rem;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.content-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Enhanced app header */
+header {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 0;
+}
+
+header h1 {
+  position: relative;
+  text-shadow: 0 0 15px rgba(0, 223, 130, 0.4);
+  transition: all 0.3s ease;
+}
+
+header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 25%;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.6;
+}
+
+/* Task and note cards with enhanced glass effect */
+.task, .note {
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(135deg, 
+    rgba(22, 28, 45, 0.6) 0%, 
+    rgba(16, 20, 35, 0.8) 50%,
+    rgba(10, 14, 29, 0.9) 100%);
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.3), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px var(--glass-highlight);
+  backdrop-filter: blur(15px);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  animation: floatIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  position: relative;
+  overflow: hidden;
+  max-height: min(350px, 60vh);
+}
+
+/* Form container styling with enhanced depth */
+.form .task {
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(135deg, 
+    rgba(22, 28, 45, 0.6) 0%, 
+    rgba(16, 20, 35, 0.8) 50%,
+    rgba(10, 14, 29, 0.9) 100%);
+  box-shadow: 
+    0 15px 35px -10px rgba(0, 0, 0, 0.3), 
+    0 8px 15px -6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px var(--glass-highlight);
+  transform-style: preserve-3d;
+  padding: 1.75rem 2rem; /* Standardize inner padding */
+}
+
+.form .task h2 {
+  position: relative;
+  display: inline-block;
+  color: white;
+  font-weight: 300;
+  margin-top: 0; /* Remove default top margin */
+  margin-bottom: 1.5rem; /* Consistent spacing after heading */
+}
+
+.form .task h2::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary-light), transparent);
+}
+
+/* Staggered animation for cards */
+.task:nth-child(1), .note:nth-child(1) { animation-delay: 0.1s; }
+.task:nth-child(2), .note:nth-child(2) { animation-delay: 0.2s; }
+.task:nth-child(3), .note:nth-child(3) { animation-delay: 0.3s; }
+.task:nth-child(n+4), .note:nth-child(n+4) { animation-delay: 0.4s; }
+
+.task:hover, .note:hover {
+  transform: translateY(-10px) scale(1.02) rotateX(5deg) rotateY(-5deg);
+  box-shadow: 
+    0 25px 35px -12px rgba(0, 0, 0, 0.4), 
+    0 15px 20px -15px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px var(--glass-highlight),
+    0 0 0 1px rgba(0, 223, 130, 0.4),
+    var(--neon-glow);
+  border-color: rgba(0, 223, 130, 0.6);
+}
+
+/* Glossy shine effect */
+.task::after, .note::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  pointer-events: none;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.task:hover::after, .note:hover::after {
+  transform: rotate(45deg) translateY(-30%);
+}
+
+/* Enhanced form inputs */
+.form-input {
+  background: rgba(14, 20, 35, 0.6);
+  border: 1px solid rgba(0, 223, 130, 0.3);
+  box-shadow: 
+    inset 0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 223, 130, 0.1);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 
+    inset 0 2px 6px rgba(0, 0, 0, 0.15),
+    0 0 0 2px rgba(0, 223, 130, 0.25),
+    0 0 15px rgba(0, 223, 130, 0.15);
+  background: rgba(16, 24, 42, 0.7);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Create button special styling */
+button[type="submit"] {
+  background: linear-gradient(135deg, #00ad66 0%, #00df82 50%, #61ffb2 100%);
+  color: white;
+  box-shadow: 
+    0 6px 15px rgba(0, 223, 130, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: 1.5rem; /* Consistent top margin */
+  margin-bottom: 0.25rem; /* Add slight bottom margin */
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #00b374 0%, #00e68a 50%, #80ffc2 100%);
+  box-shadow: 
+    0 10px 20px rgba(0, 223, 130, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(0, 223, 130, 0.5);
+  transform: translateY(-3px);
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 70%,
+    transparent 100%
+  );
+  transform: rotate(45deg) translateY(100%);
+  pointer-events: none;
+  transition: transform 1s ease;
+}
+
+button[type="submit"]:hover::before {
+  transform: rotate(45deg) translateY(-100%);
+}
+
+/* Enhanced button styles for actions */
+.btn {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 8px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Style the read button */
+a.btn.text-blue-400 {
+  color: var(--primary);
+}
+
+a.btn.text-blue-400:hover {
+  background-color: rgba(0, 223, 130, 0.1);
+}
+
+/* Enhanced empty state */
+.flex-col.items-center svg {
+  opacity: 0.3;
+  filter: drop-shadow(0 0 8px rgba(0, 223, 130, 0.4));
+  animation: float 3s ease-in-out infinite;
+}
+
+.flex-col.items-center p {
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Recycle bin button */
+.fixed.top-6.right-6 a.btn {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.fixed.top-6.right-6 a.btn:hover {
+  background-color: rgba(0, 223, 130, 0.2);
+  border-color: rgba(0, 223, 130, 0.4);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25), 0 0 10px rgba(0, 223, 130, 0.3);
+}
+
+/* Enhanced animations */
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9) rotateX(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; text-shadow: none; }
+  50% { opacity: 1; text-shadow: 0 0 15px rgba(0, 223, 130, 0.8); }
+  100% { opacity: 0.5; text-shadow: none; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Enhanced spacing and layout */
+.p-10 {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.form, .tasks {
+  max-height: calc(100vh - 120px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tasks {
+    justify-content: center;
+  }
+  
+  .task, .note {
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  header h1 {
+    font-size: min(1.75rem, 8vw);
+  }
+  
+  .fixed.top-6.right-6 {
+    top: auto;
+    right: auto;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+  
+  .form-input, button[type="submit"], .btn {
+    font-size: 14px;
+  }
+  
+  .task h1, .note h1 {
+    font-size: 1.5rem;
+  }
+  
+  .task p, .note p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Scrollbar styling for green theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 14, 29, 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, rgba(0, 223, 130, 0.5), rgba(255, 0, 170, 0.5));
+  border-radius: 10px;
+  border: 2px solid rgba(10, 14, 29, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, rgba(0, 223, 130, 0.7), rgba(255, 0, 170, 0.7));
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) rgba(10, 14, 29, 0.4);
+}

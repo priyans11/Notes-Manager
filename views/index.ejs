@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Manager - Your Personal Notes</title>
+    <meta name="description" content="Futuristic notes manager with premium 3D design">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head> 
+<body>
+    <canvas id="particleCanvas"></canvas>
+    
+    <div class="main w-full min-h-screen">
+        <header class="pt-6 pb-7 px-10 text-center">
+            <h1 class="text-5xl font-extralight tracking-tight inline-block">
+                <span class="text-[#00df82]">Notes</span> Manager
+                <span class="animate-pulse text-[#00df82]/50 ml-1">_</span>
+            </h1>
+        </header>
+        
+        <div class="form px-10 pt-6 pb-8 max-w-2xl mx-auto">
+            <div class="task rounded-lg mb-6">
+                <h2 class="text-white/90 text-2xl font-light">Create New Note</h2>
+                <form action="/create" method="post">
+                    <input class="form-input block w-full rounded-lg outline-none px-5 py-3 h-12" type="text" placeholder="Title" name="title" required>
+                    <textarea class="form-input block w-full rounded-lg outline-none mt-3 resize-none px-5 py-4 h-32" placeholder="Write your note here..." name="details" required></textarea>
+                    <button class="btn px-6 py-3 rounded-lg text-white font-medium w-full sm:w-auto" type="submit">
+                        <span class="flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Create Note
+                           
+                        </span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tasks px-10 py-5 flex flex-wrap gap-6 justify-center">
+            <% if(files.length>0){ %>
+                <% files.forEach(function(val){ %>
+                    <div class="task w-72 px-5 py-5 rounded-lg">
+                        <h1 class="text-white text-2xl font-light tracking-tight"> <%= val %> </h1>
+                        <div class="flex gap-3 mt-5">
+                            <a href="/file/<%= val %>" class="btn flex items-center gap-2 text-[#00df82] text-sm hover:bg-[#00df82]/10 px-3 py-2 rounded-md">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                Read
+                            </a>
+                            <button class="btn flex items-center gap-2 text-red-400 text-sm hover:bg-red-500/10 px-3 py-2 rounded-md" onclick="deleteNote('<%= val %>')">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="flex flex-col items-center justify-center py-16 text-center">
+                    <svg class="w-24 h-24 text-[#00df82]/30 mb-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p class="text-zinc-400 text-lg mb-3">No notes yet. Create your first note!</p>
+                    <div class="mt-2 w-16 h-1 bg-gradient-to-r from-transparent via-[#00df82]/40 to-transparent rounded-full"></div>
+                </div>
+            <% } %>
+        </div>
+        
+        <div class="fixed top-6 right-6 z-10">
+            <a href="/bin" class="btn flex items-center gap-2 text-white/90 px-4 py-2 rounded-lg backdrop-blur-sm bg-zinc-800/40 hover:bg-zinc-700/60 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                Recycle Bin
+            </a>
+        </div>
+    </div>
+
+    <script src="/javascripts/script.js"></script>
+    <script src="/javascripts/particleBackground.js"></script>
+</body>
+</html>
